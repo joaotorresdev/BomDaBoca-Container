@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bom da Boca Container | Hamburgueria Artesanal em Cajamar</title>
+<meta name="description" content="Hamburgueria artesanal Bom da Boca Container, em Cajamar - SP. Nota 4,9 no Google. Aberto todos os dias até 02:00. Peça pelo WhatsApp.">
+
+<!-- Tailwind CSS via CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<!-- Google Fonts: Anton (display/graffiti), Work Sans (corpo), Space Mono (stencil/container) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    /* ===== Token de cores — identidade real do container ===== */
+    --container-black:#141317;
+    --container-steel:#232228;
+    --container-steel-light:#38363e;
+    --cheese-yellow:#f5b929;
+    --cheese-deep:#e2960f;
+    --graffiti-red:#d6402f;
+    --bulb-glow:#ffcf6e;
+    --paper:#f4efe4;
+    --paper-dim:#cfc7b6;
+  }
+
+  *{ scroll-behavior:smooth; }
+
+  body{
+    background-color:var(--container-black);
+    color:var(--paper);
+    font-family:'Work Sans', sans-serif;
+    overflow-x:hidden;
+  }
+
+  .font-display{ font-family:'Anton', sans-serif; letter-spacing:0.5px; }
+  .font-stencil{ font-family:'Space Mono', monospace; letter-spacing:2px; text-transform:uppercase; }
+
+  /* Textura de chapa/corrugado do container */
+  .corrugated{
+    background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 2px, transparent 2px, transparent 14px);
+  }
+  .steel-panel{
+    background-color:var(--container-steel);
+    background-image:
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.25) 0px, rgba(0,0,0,0.25) 1px, transparent 1px, transparent 26px),
+      linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.1));
+  }
+
+  /* Rebites decorativos */
+  .rivet::before, .rivet::after{
+    content:"";
+    position:absolute;
+    width:6px; height:6px;
+    border-radius:50%;
+    background:rgba(244,239,228,0.15);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.5);
+  }
+
+  /* Etiqueta estilo manifesto de container */
+  .crate-label{
+    border:1.5px solid rgba(244,239,228,0.35);
+    padding:2px 10px;
+    display:inline-block;
+  }
+
+  /* Botão amarelo queijo derretido */
+  .btn-cheese{
+    background:linear-gradient(180deg, var(--cheese-yellow), var(--cheese-deep));
+    color:var(--container-black);
+    box-shadow: 0 6px 0 rgba(0,0,0,0.35), 0 10px 20px rgba(0,0,0,0.35);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-cheese:hover{ transform:translateY(-2px); box-shadow:0 8px 0 rgba(0,0,0,0.35), 0 14px 24px rgba(0,0,0,0.4); }
+  .btn-cheese:active{ transform:translateY(2px); box-shadow:0 3px 0 rgba(0,0,0,0.35); }
+
+  .btn-outline{
+    border:2px solid var(--paper);
+    color:var(--paper);
+    transition: all .2s ease;
+  }
+  .btn-outline:hover{ background:var(--paper); color:var(--container-black); }
+
+  /* Divisor "queijo derretendo" — elemento assinatura da página */
+  .cheese-drip{
+    display:block;
+    width:100%;
+    height:46px;
+    fill:var(--cheese-yellow);
+  }
+  .cheese-drip-flip{ transform:rotate(180deg); }
+
+  /* Luzinhas de varal (string lights) do container real */
+  .string-lights{ position:relative; height:34px; overflow:visible; }
+  .bulb{
+    position:absolute; top:14px;
+    width:9px; height:12px;
+    border-radius:0 0 50% 50%;
+    background:radial-gradient(circle at 50% 30%, #fff6d8, var(--bulb-glow) 60%, #d98c1a 100%);
+    box-shadow:0 0 10px 3px rgba(255,207,110,0.55);
+    animation: flicker 2.4s ease-in-out infinite;
+  }
+  @keyframes flicker{ 0%,100%{opacity:1;} 50%{opacity:.72;} }
+
+  /* Cards de cardápio */
+  .menu-card{
+    background:var(--container-steel);
+    border:1px solid rgba(244,239,228,0.08);
+    transition: transform .25s ease, border-color .25s ease;
+  }
+  .menu-card:hover{ transform:translateY(-6px); border-color:var(--cheese-yellow); }
+
+  .tab-btn{
+    font-family:'Space Mono', monospace;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    transition: all .2s ease;
+    border-bottom:3px solid transparent;
+  }
+  .tab-btn.active{
+    color:var(--cheese-yellow);
+    border-bottom-color:var(--cheese-yellow);
+  }
+
+  .star{ color:var(--cheese-yellow); }
+
+  /* Reveal on scroll */
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* Scrollbar discreta */
+  ::-webkit-scrollbar{ width:10px; }
+  ::-webkit-scrollbar-track{ background:var(--container-black); }
+  ::-webkit-scrollbar-thumb{ background:var(--container-steel-light); border-radius:6px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+
+  /* Foco visível para acessibilidade */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--cheese-yellow);
+    outline-offset:3px;
+  }
+</style>
+</head>
+
+<body class="antialiased">
+
+<!-- ============ NAVBAR ============ -->
+<header id="navbar" class="fixed top-0 left-0 w-full z-50 transition-colors duration-300" style="background:rgba(20,19,23,0.0);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+
+      <!-- Logo -->
+      <a href="#home" class="flex items-center gap-3 group">
+        <div class="w-11 h-11 rounded-full border-2 flex items-center justify-center" style="border-color:var(--cheese-yellow);">
+          <i data-lucide="flame" class="w-5 h-5" style="color:var(--cheese-yellow);"></i>
+        </div>
+        <div class="leading-none">
+          <p class="font-display text-xl sm:text-2xl tracking-wide" style="color:var(--paper);">BOM DA BOCA</p>
+          <p class="font-stencil text-[10px]" style="color:var(--cheese-yellow);">— CONTAINER —</p>
+        </div>
+      </a>
+
+      <!-- Links desktop -->
+      <nav class="hidden md:flex items-center gap-9 font-stencil text-xs">
+        <a href="#home" class="hover:text-[var(--cheese-yellow)] transition-colors" style="color:var(--paper-dim);">Home</a>
+        <a href="#cardapio" class="hover:text-[var(--cheese-yellow)] transition-colors" style="color:var(--paper-dim);">Cardápio</a>
+        <a href="#depoimentos" class="hover:text-[var(--cheese-yellow)] transition-colors" style="color:var(--paper-dim);">Depoimentos</a>
+        <a href="#contato" class="hover:text-[var(--cheese-yellow)] transition-colors" style="color:var(--paper-dim);">Contato</a>
+      </nav>
+
+      <!-- CTA WhatsApp -->
+      <button onclick="pedirWhatsApp('geral')" class="hidden md:flex items-center gap-2 btn-cheese font-stencil text-xs font-bold px-5 py-3 rounded-sm">
+        <i data-lucide="message-circle" class="w-4 h-4"></i>
+        Pedir no WhatsApp
+      </button>
+
+      <!-- Botão mobile -->
+      <button id="menuBtn" class="md:hidden" style="color:var(--paper);" aria-label="Abrir menu">
+        <i data-lucide="menu" class="w-7 h-7"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menu mobile -->
+  <div id="mobileMenu" class="md:hidden hidden steel-panel border-t" style="border-color:rgba(244,239,228,0.08);">
+    <nav class="flex flex-col px-6 py-5 gap-5 font-stencil text-sm">
+      <a href="#home" class="mobile-link" style="color:var(--paper-dim);">Home</a>
+      <a href="#cardapio" class="mobile-link" style="color:var(--paper-dim);">Cardápio</a>
+      <a href="#depoimentos" class="mobile-link" style="color:var(--paper-dim);">Depoimentos</a>
+      <a href="#contato" class="mobile-link" style="color:var(--paper-dim);">Contato</a>
+      <button onclick="pedirWhatsApp('geral')" class="btn-cheese font-stencil text-xs font-bold px-5 py-3 rounded-sm w-full">Pedir no WhatsApp</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+  <!-- Imagem de fundo -->
+  <div class="absolute inset-0">
+    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1920&auto=format&fit=crop"
+         alt="Hambúrguer artesanal suculento com queijo derretido"
+         class="w-full h-full object-cover">
+    <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(20,19,23,0.55) 0%, rgba(20,19,23,0.75) 55%, var(--container-black) 100%);"></div>
+  </div>
+
+  <!-- Varal de luzes -->
+  <div class="absolute top-20 left-0 w-full string-lights" id="stringLights"></div>
+
+  <div class="relative z-10 max-w-5xl mx-auto px-5 text-center pt-16">
+    <span class="font-stencil crate-label text-[11px]" style="color:var(--cheese-yellow);">CONT. Nº 01 — VILA NOVA, CAJAMAR/SP</span>
+
+    <h1 class="font-display text-5xl sm:text-7xl lg:text-8xl mt-6 leading-[0.95]" style="color:var(--paper); text-shadow:0 6px 24px rgba(0,0,0,0.6);">
+      O LANCHE MAIS<br>
+      <span style="color:var(--cheese-yellow);">GOSTOSO</span> DA REGIÃO
+    </h1>
+
+    <p class="mt-6 text-base sm:text-lg max-w-xl mx-auto" style="color:var(--paper-dim);">
+      Blend artesanal, muito cheddar derretido e aquele crocante de batata palha que só o container faz. Feito na hora, todo dia, até tarde.
+    </p>
+
+    <!-- Nota 4.9 -->
+    <div class="flex items-center justify-center gap-2 mt-7">
+      <div class="flex gap-0.5">
+        <i data-lucide="star" class="w-5 h-5 fill-current star"></i>
+        <i data-lucide="star" class="w-5 h-5 fill-current star"></i>
+        <i data-lucide="star" class="w-5 h-5 fill-current star"></i>
+        <i data-lucide="star" class="w-5 h-5 fill-current star"></i>
+        <i data-lucide="star" class="w-5 h-5 fill-current star"></i>
+      </div>
+      <span class="font-bold text-lg" style="color:var(--paper);">4,9</span>
+      <span class="text-sm" style="color:var(--paper-dim);">(27 avaliações no Google)</span>
+    </div>
+
+    <!-- CTAs -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mt-10">
+      <button onclick="pedirWhatsApp('geral')" class="btn-cheese font-stencil font-bold text-sm px-8 py-4 rounded-sm inline-flex items-center justify-center gap-2">
+        <i data-lucide="message-circle" class="w-5 h-5"></i>
+        Peça agora no WhatsApp
+      </button>
+      <a href="#cardapio" class="btn-outline font-stencil font-bold text-sm px-8 py-4 rounded-sm inline-flex items-center justify-center gap-2">
+        <i data-lucide="book-open" class="w-5 h-5"></i>
+        Ver Cardápio
+      </a>
+    </div>
+
+    <p class="font-stencil text-xs mt-8" style="color:var(--paper-dim);">
+      <i data-lucide="clock" class="w-3.5 h-3.5 inline -mt-1"></i>
+      Aberto todos os dias até 02:00 &nbsp;·&nbsp; R$ 40–60 por pessoa
+    </p>
+  </div>
+
+  <!-- Drip de queijo no rodapé do hero -->
+  <div class="absolute bottom-0 left-0 w-full leading-[0]">
+    <svg class="cheese-drip" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,0 L1200,0 L1200,20 C1150,20 1150,50 1100,50 C1050,50 1050,15 1000,15 C950,15 950,45 900,45 C850,45 850,10 800,10 C750,10 750,55 700,55 C650,55 650,18 600,18 C550,18 550,42 500,42 C450,42 450,8 400,8 C350,8 350,48 300,48 C250,48 250,22 200,22 C150,22 150,38 100,38 C70,38 60,20 0,20 Z"></path>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ DIFERENCIAIS ============ -->
+<section class="py-20" style="background:var(--container-black);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <div class="reveal steel-panel rounded-md p-7 text-center relative">
+        <i data-lucide="beef" class="w-9 h-9 mx-auto mb-4" style="color:var(--cheese-yellow);"></i>
+        <h3 class="font-display text-lg" style="color:var(--paper);">INGREDIENTES ARTESANAIS</h3>
+        <p class="text-sm mt-2" style="color:var(--paper-dim);">Blend próprio, pão brioche e queijo derretido na medida certa.</p>
+      </div>
+
+      <div class="reveal steel-panel rounded-md p-7 text-center relative">
+        <i data-lucide="home" class="w-9 h-9 mx-auto mb-4" style="color:var(--cheese-yellow);"></i>
+        <h3 class="font-display text-lg" style="color:var(--paper);">AMBIENTE FAMILIAR</h3>
+        <p class="text-sm mt-2" style="color:var(--paper-dim);">Container decorado, luzinhas e mesas ao ar livre pra curtir com a família.</p>
+      </div>
+
+      <div class="reveal steel-panel rounded-md p-7 text-center relative">
+        <i data-lucide="bike" class="w-9 h-9 mx-auto mb-4" style="color:var(--cheese-yellow);"></i>
+        <h3 class="font-display text-lg" style="color:var(--paper);">ENTREGA RÁPIDA</h3>
+        <p class="text-sm mt-2" style="color:var(--paper-dim);">Delivery ágil pra você não esperar com fome pelo seu pedido.</p>
+      </div>
+
+      <div class="reveal steel-panel rounded-md p-7 text-center relative">
+        <i data-lucide="shopping-bag" class="w-9 h-9 mx-auto mb-4" style="color:var(--cheese-yellow);"></i>
+        <h3 class="font-display text-lg" style="color:var(--paper);">RETIRADA NO LOCAL</h3>
+        <p class="text-sm mt-2" style="color:var(--paper-dim);">Peça, retire quentinho e leve pra casa em minutos.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ CARDÁPIO ============ -->
+<section id="cardapio" class="py-24 corrugated" style="background:var(--container-steel);">
+  <div class="max-w-6xl mx-auto px-5 lg:px-8">
+
+    <div class="text-center mb-14 reveal">
+      <span class="font-stencil crate-label text-[11px]" style="color:var(--cheese-yellow);">CONT. Nº 02 — CARDÁPIO</span>
+      <h2 class="font-display text-4xl sm:text-5xl mt-4" style="color:var(--paper);">MONTE SEU PEDIDO</h2>
+      <p class="mt-3" style="color:var(--paper-dim);">Tudo feito na hora, do jeito que a casa manda.</p>
+    </div>
+
+    <!-- Abas -->
+    <div class="flex items-center justify-center gap-8 border-b mb-12" style="border-color:rgba(244,239,228,0.12);">
+      <button class="tab-btn active pb-4" data-tab="burgers" style="color:var(--paper);">Hambúrgueres</button>
+      <button class="tab-btn pb-4" data-tab="sides" style="color:var(--paper);">Acompanhamentos</button>
+      <button class="tab-btn pb-4" data-tab="drinks" style="color:var(--paper);">Bebidas</button>
+    </div>
+
+    <!-- Hambúrgueres -->
+    <div class="tab-panel grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="panel-burgers">
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">CLÁSSICO DA BOCA</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 32</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Pão brioche, blend artesanal 160g, muito cheddar, bacon crocante, batata palha e maionese da casa.</p>
+        <button onclick="pedirWhatsApp('Clássico da Boca')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">DUPLO FUMAÇA</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 45</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Blend duplo, cheddar cremoso escorrendo, cebola caramelizada e bacon extra crocante.</p>
+        <button onclick="pedirWhatsApp('Duplo Fumaça')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">BOCA DE FOGO</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 38</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Blend artesanal, geleia de pimenta da casa, queijo prato e cebola crocante frita.</p>
+        <button onclick="pedirWhatsApp('Boca de Fogo')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">CONTAINER ESPECIAL</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 42</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Blend 180g, catupiry cremoso, bacon, ovo e batata palha crocante por cima.</p>
+        <button onclick="pedirWhatsApp('Container Especial')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">VEGGIE DA VILA</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 34</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Hambúrguer de grão-de-bico, queijo coalho grelhado, rúcula fresca e tomate.</p>
+        <button onclick="pedirWhatsApp('Veggie da Vila')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">BACON BOMB</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 40</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Duplo bacon, cascata de cheddar derretido e molho barbecue defumado.</p>
+        <button onclick="pedirWhatsApp('Bacon Bomb')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+    </div>
+
+    <!-- Acompanhamentos -->
+    <div class="tab-panel hidden grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="panel-sides">
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">BATATA FRITA CROCANTE</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 18</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Porção generosa, sequinha por fora e macia por dentro.</p>
+        <button onclick="pedirWhatsApp('Batata Frita Crocante')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">ESPETINHO DE QUEIJO COALHO</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 12</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Grelhado na hora, dourado por fora e derretendo por dentro.</p>
+        <button onclick="pedirWhatsApp('Espetinho de Queijo Coalho')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">PÃO DE ALHO ARTESANAL</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 14</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Assado na brasa com manteiga de alho da casa.</p>
+        <button onclick="pedirWhatsApp('Pão de Alho Artesanal')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">PETISCO DE CARNE</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 22</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Cubos de carne temperados e grelhados, servidos bem quentinhos.</p>
+        <button onclick="pedirWhatsApp('Petisco de Carne')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+    </div>
+
+    <!-- Bebidas -->
+    <div class="tab-panel hidden grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="panel-drinks">
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">COCA-COLA 2L</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 15</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Sabor original, gelada, pra dividir com a galera.</p>
+        <button onclick="pedirWhatsApp('Coca-Cola 2L')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">REFRIGERANTE LATA</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 7</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Coca-Cola, Guaraná ou Sprite, geladinha.</p>
+        <button onclick="pedirWhatsApp('Refrigerante Lata')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">SUCO NATURAL</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 9</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Feito na hora, sabor de acordo com a fruta do dia.</p>
+        <button onclick="pedirWhatsApp('Suco Natural')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+
+      <div class="menu-card reveal rounded-md p-6 flex flex-col">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="font-display text-xl" style="color:var(--paper);">ÁGUA MINERAL</h3>
+          <span class="font-stencil text-sm shrink-0" style="color:var(--cheese-yellow);">R$ 5</span>
+        </div>
+        <p class="text-sm mt-2 flex-1" style="color:var(--paper-dim);">Com ou sem gás, bem gelada.</p>
+        <button onclick="pedirWhatsApp('Água Mineral')" class="mt-4 font-stencil text-xs self-start hover:opacity-70 transition" style="color:var(--cheese-yellow);">PEDIR ESTE →</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Drip invertido saindo da seção de cardápio -->
+<div class="leading-[0]" style="background:var(--container-black);">
+  <svg class="cheese-drip" style="fill:var(--container-steel);" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 L1200,0 L1200,20 C1150,20 1150,50 1100,50 C1050,50 1050,15 1000,15 C950,15 950,45 900,45 C850,45 850,10 800,10 C750,10 750,55 700,55 C650,55 650,18 600,18 C550,18 550,42 500,42 C450,42 450,8 400,8 C350,8 350,48 300,48 C250,48 250,22 200,22 C150,22 150,38 100,38 C70,38 60,20 0,20 Z"></path>
+  </svg>
+</div>
+
+<!-- ============ DEPOIMENTOS ============ -->
+<section id="depoimentos" class="py-24" style="background:var(--container-black);">
+  <div class="max-w-6xl mx-auto px-5 lg:px-8">
+
+    <div class="text-center mb-14 reveal">
+      <span class="font-stencil crate-label text-[11px]" style="color:var(--cheese-yellow);">CONT. Nº 03 — QUEM PROVOU, APROVOU</span>
+      <h2 class="font-display text-4xl sm:text-5xl mt-4" style="color:var(--paper);">O QUE DIZEM SOBRE A GENTE</h2>
+      <div class="flex items-center justify-center gap-2 mt-4">
+        <div class="flex gap-0.5">
+          <i data-lucide="star" class="w-5 h-5 fill-current star"></i>
+          <i data-lucide="star" class="w-5 h-5 fill-current star"></i>
+          <i data-lucide="star" class="w-5 h-5 fill-current star"></i>
+          <i data-lucide="star" class="w-5 h-5 fill-current star"></i>
+          <i data-lucide="star" class="w-5 h-5 fill-current star"></i>
+        </div>
+        <span style="color:var(--paper-dim);" class="text-sm">4,9 de 27 avaliações no Google</span>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <div class="reveal steel-panel rounded-md p-7 relative">
+        <div class="flex gap-0.5 mb-4">
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+        </div>
+        <p class="text-sm italic" style="color:var(--paper);">"O melhor lanche que já comi, é sensacional!! Moro há 30 km de distância, mas sempre que posso, faço questão de ir lá, super recomendo."</p>
+        <div class="mt-5 pt-4 border-t flex items-center justify-between" style="border-color:rgba(244,239,228,0.1);">
+          <span class="font-semibold text-sm" style="color:var(--paper);">Bianca Oliveira</span>
+          <span class="font-stencil text-[10px]" style="color:var(--cheese-yellow);">LOCAL GUIDE</span>
+        </div>
+      </div>
+
+      <div class="reveal steel-panel rounded-md p-7 relative">
+        <div class="flex gap-0.5 mb-4">
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+        </div>
+        <p class="text-sm italic" style="color:var(--paper);">"Lanches grandes e bem gostosos, difícil conseguir comer 1 inteiro, produtos de boa qualidade, e um bom cheddar e bacon, a batata também muito gostosa, recomendo."</p>
+        <div class="mt-5 pt-4 border-t flex items-center justify-between" style="border-color:rgba(244,239,228,0.1);">
+          <span class="font-semibold text-sm" style="color:var(--paper);">Tharso Picoli</span>
+          <span class="font-stencil text-[10px]" style="color:var(--cheese-yellow);">LOCAL GUIDE</span>
+        </div>
+      </div>
+
+      <div class="reveal steel-panel rounded-md p-7 relative">
+        <div class="flex gap-0.5 mb-4">
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+          <i data-lucide="star" class="w-4 h-4 fill-current star"></i>
+        </div>
+        <p class="text-sm italic" style="color:var(--paper);">"Lugar muito legal pra curtir com sua família, atendimento top e lanches deliciosos super recomendo."</p>
+        <div class="mt-5 pt-4 border-t flex items-center justify-between" style="border-color:rgba(244,239,228,0.1);">
+          <span class="font-semibold text-sm" style="color:var(--paper);">Marines Importi</span>
+          <span class="font-stencil text-[10px]" style="color:var(--cheese-yellow);">LOCAL GUIDE</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ LOCALIZAÇÃO / CONTATO ============ -->
+<section id="contato" class="py-24 corrugated" style="background:var(--container-steel);">
+  <div class="max-w-6xl mx-auto px-5 lg:px-8">
+
+    <div class="text-center mb-14 reveal">
+      <span class="font-stencil crate-label text-[11px]" style="color:var(--cheese-yellow);">CONT. Nº 04 — J4WR+J8 CAJAMAR</span>
+      <h2 class="font-display text-4xl sm:text-5xl mt-4" style="color:var(--paper);">VENHA NOS VISITAR</h2>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-8 items-stretch">
+
+      <!-- Mapa -->
+      <div class="reveal rounded-md overflow-hidden min-h-[340px] border" style="border-color:rgba(244,239,228,0.1);">
+        <iframe
+          class="w-full h-full min-h-[340px]"
+          style="filter:grayscale(0.3) contrast(1.1);"
+          src="https://www.google.com/maps?q=Bom+da+Boca+Container,+Vila+Nova,+Cajamar+-+SP&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa Bom da Boca Container">
+        </iframe>
+      </div>
+
+      <!-- Infos -->
+      <div class="reveal steel-panel rounded-md p-8 flex flex-col justify-between">
+        <div class="space-y-6">
+
+          <div class="flex gap-4">
+            <i data-lucide="map-pin" class="w-6 h-6 shrink-0" style="color:var(--cheese-yellow);"></i>
+            <div>
+              <p class="font-semibold" style="color:var(--paper);">Endereço</p>
+              <p class="text-sm mt-1" style="color:var(--paper-dim);">Vila Nova, Cajamar - SP, CEP 07750-000</p>
+              <p class="font-stencil text-[11px] mt-1" style="color:var(--paper-dim);">Código Plus: J4WR+J8</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <i data-lucide="clock" class="w-6 h-6 shrink-0" style="color:var(--cheese-yellow);"></i>
+            <div>
+              <p class="font-semibold" style="color:var(--paper);">Horário de Funcionamento</p>
+              <p class="text-sm mt-1" style="color:var(--paper-dim);">Aberto todos os dias, até 02:00</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <i data-lucide="phone" class="w-6 h-6 shrink-0" style="color:var(--cheese-yellow);"></i>
+            <div>
+              <p class="font-semibold" style="color:var(--paper);">Telefone / WhatsApp</p>
+              <p class="text-sm mt-1" style="color:var(--paper-dim);">(11) 99739-6825</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <i data-lucide="utensils" class="w-6 h-6 shrink-0" style="color:var(--cheese-yellow);"></i>
+            <div>
+              <p class="font-semibold" style="color:var(--paper);">Serviços</p>
+              <p class="text-sm mt-1" style="color:var(--paper-dim);">Refeição no local · Para viagem · Entrega</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 mt-8">
+          <a href="https://www.google.com/maps/dir/?api=1&destination=Bom+da+Boca+Container+Vila+Nova+Cajamar+SP"
+             target="_blank" rel="noopener"
+             class="btn-cheese font-stencil font-bold text-xs px-6 py-4 rounded-sm inline-flex items-center justify-center gap-2 flex-1">
+            <i data-lucide="navigation" class="w-4 h-4"></i>
+            Traçar rota no GPS
+          </a>
+          <button onclick="pedirWhatsApp('geral')"
+             class="btn-outline font-stencil font-bold text-xs px-6 py-4 rounded-sm inline-flex items-center justify-center gap-2 flex-1">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            Chamar no WhatsApp
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer style="background:var(--container-black); border-top:1px solid rgba(244,239,228,0.08);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-14">
+    <div class="grid sm:grid-cols-3 gap-10">
+
+      <div>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center" style="border-color:var(--cheese-yellow);">
+            <i data-lucide="flame" class="w-4 h-4" style="color:var(--cheese-yellow);"></i>
+          </div>
+          <p class="font-display text-lg" style="color:var(--paper);">BOM DA BOCA CONTAINER</p>
+        </div>
+        <p class="text-sm mt-4" style="color:var(--paper-dim);">Hamburgueria artesanal em Cajamar - SP. Feito com fogo, queijo e muito carinho.</p>
+      </div>
+
+      <div>
+        <p class="font-stencil text-xs mb-4" style="color:var(--cheese-yellow);">Links rápidos</p>
+        <ul class="space-y-2 text-sm" style="color:var(--paper-dim);">
+          <li><a href="#home" class="hover:text-[var(--paper)] transition">Home</a></li>
+          <li><a href="#cardapio" class="hover:text-[var(--paper)] transition">Cardápio</a></li>
+          <li><a href="#depoimentos" class="hover:text-[var(--paper)] transition">Depoimentos</a></li>
+          <li><a href="#contato" class="hover:text-[var(--paper)] transition">Contato</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="font-stencil text-xs mb-4" style="color:var(--cheese-yellow);">Siga a gente</p>
+        <div class="flex gap-3">
+          <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full border flex items-center justify-center hover:border-[var(--cheese-yellow)] transition" style="border-color:rgba(244,239,228,0.2);">
+            <i data-lucide="instagram" class="w-4 h-4" style="color:var(--paper);"></i>
+          </a>
+          <a href="#" aria-label="Facebook" class="w-10 h-10 rounded-full border flex items-center justify-center hover:border-[var(--cheese-yellow)] transition" style="border-color:rgba(244,239,228,0.2);">
+            <i data-lucide="facebook" class="w-4 h-4" style="color:var(--paper);"></i>
+          </a>
+          <a href="#" onclick="pedirWhatsApp('geral'); return false;" aria-label="WhatsApp" class="w-10 h-10 rounded-full border flex items-center justify-center hover:border-[var(--cheese-yellow)] transition" style="border-color:rgba(244,239,228,0.2);">
+            <i data-lucide="message-circle" class="w-4 h-4" style="color:var(--paper);"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="border-t mt-10 pt-6 text-center" style="border-color:rgba(244,239,228,0.08);">
+      <p class="font-stencil text-[11px]" style="color:var(--paper-dim);">&copy; 2026 BOM DA BOCA CONTAINER — TODOS OS DIREITOS RESERVADOS</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Botão flutuante WhatsApp (mobile) -->
+<button onclick="pedirWhatsApp('geral')"
+  class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center md:hidden"
+  style="background:#25D366; box-shadow:0 6px 20px rgba(0,0,0,0.4);"
+  aria-label="Pedir no WhatsApp">
+  <i data-lucide="message-circle" class="w-7 h-7 text-white"></i>
+</button>
+
+<script>
+  // Inicializa os ícones Lucide
+  lucide.createIcons();
+
+  // ===== Número de WhatsApp da hamburgueria =====
+  const WHATSAPP_NUMBER = "5511997396825"; // (11) 99739-6825 no formato internacional
+
+  // Gera mensagem automática e abre o WhatsApp
+  function pedirWhatsApp(item){
+    let mensagem;
+    if(item === 'geral'){
+      mensagem = "Olá! Vim pelo site do Bom da Boca Container e gostaria de fazer um pedido. 🍔🔥";
+    } else {
+      mensagem = `Olá! Vim pelo site do Bom da Boca Container e gostaria de pedir: ${item}. 🍔🔥`;
+    }
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
+    window.open(url, '_blank');
+  }
+
+  // ===== Menu mobile =====
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+  });
+
+  // ===== Navbar com fundo sólido ao rolar =====
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 40){
+      navbar.style.background = 'rgba(20,19,23,0.92)';
+      navbar.style.backdropFilter = 'blur(8px)';
+      navbar.style.borderBottom = '1px solid rgba(244,239,228,0.08)';
+    } else {
+      navbar.style.background = 'rgba(20,19,23,0.0)';
+      navbar.style.backdropFilter = 'none';
+      navbar.style.borderBottom = 'none';
+    }
+  });
+
+  // ===== Abas do cardápio =====
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = btn.getAttribute('data-tab');
+      tabPanels.forEach(panel => {
+        panel.classList.toggle('hidden', panel.id !== `panel-${target}`);
+      });
+    });
+  });
+
+  // ===== Varal de luzinhas gerado dinamicamente =====
+  const stringLights = document.getElementById('stringLights');
+  const bulbCount = 22;
+  for(let i = 0; i < bulbCount; i++){
+    const bulb = document.createElement('div');
+    bulb.className = 'bulb';
+    bulb.style.left = (i * (100/bulbCount)) + '%';
+    bulb.style.animationDelay = (Math.random() * 2) + 's';
+    stringLights.appendChild(bulb);
+  }
+
+  // ===== Reveal on scroll =====
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
